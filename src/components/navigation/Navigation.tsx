@@ -1,8 +1,10 @@
 'use client'
+
+import { User } from "@/models/User"
 import NavLinks from "./NavLinks"
 
 type Props = {
-  user?: { username: string }
+  user: Omit<User, 'password'>
 }
 const Navigation = ({ user }: Props) => {
   return (

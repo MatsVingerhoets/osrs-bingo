@@ -2,7 +2,7 @@ import { User } from "@/models/User";
 import UserDropDown from "./UserDropdown";
 
 type Props = {
-  user: User
+  user: Omit<User, 'password'>
 }
 const NavLinks = ({ user }: Props) => {
   return (

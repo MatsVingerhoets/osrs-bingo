@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { User } from '@/models/User';
 
 type Props = {
-  user: User
+  user: Omit<User, 'password'>
 }
 const UserDropDown = ({ user }: Props) => {
   return (
