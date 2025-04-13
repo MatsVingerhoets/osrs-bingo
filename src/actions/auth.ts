@@ -7,11 +7,6 @@ import { redirect } from "next/navigation";
 import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 
-// const VALID_CODES = {
-//   'test123': { id: 1, name: 'Player 1' },
-//   'player2-code': { id: 2, name: 'Player 2' },
-// };
-//
 export async function login(formData: { username: string, password: string }) {
 
   const session = await getSession();
@@ -19,11 +14,10 @@ export async function login(formData: { username: string, password: string }) {
   const { username, password } = formData;
   const user = await db
     .selectFrom("users")
-    .select(["id", "username", "password"]) // password is hashed
+    .select(["id", "username", "password", "role"]) // password is hashed
     .where("username", "=", username)
     .executeTakeFirst();
 
-  console.log({ user })
   if (!user) {
     return { error: "Invalid credentials" };
   }
@@ -36,6 +30,7 @@ export async function login(formData: { username: string, password: string }) {
   session.user = {
     id: user.id,
     username: user.username,
+    role: user.role
   };
 
   console.log("success")

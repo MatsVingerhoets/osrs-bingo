@@ -3,6 +3,7 @@ import { SessionOptions } from "iron-session";
 export type User = {
   id: number;
   username: string;
+  role: "USER" | "ADMIN"
 };
 
 // Extend the session to include `user`
@@ -21,3 +22,4 @@ export const sessionOptions: SessionOptions = {
     secure: process.env.NODE_ENV === "production",
   }
 }
+
