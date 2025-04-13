@@ -1,7 +1,8 @@
+import { User } from "@/models/User";
 import UserDropDown from "./UserDropdown";
 
 type Props = {
-  user?: { username: string }
+  user: User
 }
 const NavLinks = ({ user }: Props) => {
   return (

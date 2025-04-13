@@ -14,7 +14,7 @@ export async function login(formData: { username: string, password: string }) {
   const { username, password } = formData;
   const user = await db
     .selectFrom("users")
-    .select(["id", "username", "password", "role"]) // password is hashed
+    .select(["id", "username", "password", "role", 'team_id'])
     .where("username", "=", username)
     .executeTakeFirst();
 
@@ -30,7 +30,8 @@ export async function login(formData: { username: string, password: string }) {
   session.user = {
     id: user.id,
     username: user.username,
-    role: user.role
+    role: user.role,
+    'team_id': user.team_id
   };
 
   console.log("success")

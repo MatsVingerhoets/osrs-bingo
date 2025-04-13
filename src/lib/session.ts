@@ -4,6 +4,7 @@ export type User = {
   id: number;
   username: string;
   role: "USER" | "ADMIN"
+  team_id?: number
 };
 
 // Extend the session to include `user`
