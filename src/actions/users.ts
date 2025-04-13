@@ -17,3 +17,11 @@ export async function postUser(values: { username: string, password: string }) {
   revalidatePath("/admin/dashboard");
   return result
 }
+
+export async function getUserById(id: number) {
+  return await db
+    .selectFrom('users')
+    .select(['id', 'role', 'team_id', 'username'])
+    .where('id', '=', id)
+    .executeTakeFirst();
+}

@@ -32,9 +32,6 @@ const CreateTeamModal = ({ toggle }: Props) => {
         username: formattedErrors.username?.[0] || "",
         password: formattedErrors.password?.[0] || ""
       })
-    }
-    if (!result.data) {
-      setErrors({ username: "something went wrong" })
       return
     }
 

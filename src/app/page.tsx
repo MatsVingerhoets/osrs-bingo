@@ -1,5 +1,6 @@
 import { getSession } from "@/actions/auth";
 import { getTeamById } from "@/actions/teams";
+import { getUserById } from "@/actions/users";
 import Board from "@/components/Board";
 import Navigation from "@/components/navigation/Navigation";
 import TeamStats from "@/components/TeamStats";
@@ -11,13 +12,14 @@ export default async function Home() {
   if (!user) {
     redirect('/login');
   }
-  if (!user.team_id) return
-
-  const team = await getTeamById(user.team_id)
-  console.log({ team, user })
+  const dbUser = await getUserById(user.id);
+  if (!dbUser) {
+    redirect('/login');
+  }
+  const team = user.team_id ? await getTeamById(user.team_id) : null
   return (
     <div className="flex justify-center flex-col h-full">
-      <Navigation user={user} />
+      <Navigation user={dbUser} />
       {user.team_id ? (
         <div className="flex p-10 h-full">
           <Board />
