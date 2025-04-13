@@ -26,3 +26,11 @@ export async function assignUserToTeam(userId: number, teamId: number) {
 
   revalidatePath('/admin/dashboard')
 }
+
+export async function getTeamById(id: number) {
+  return await db
+    .selectFrom('teams')
+    .selectAll()
+    .where('id', '=', id)
+    .executeTakeFirst();
+}

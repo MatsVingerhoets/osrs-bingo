@@ -1,5 +1,6 @@
 "use client";
 import { login } from "@/actions/auth";
+import { Button, Field, Label } from "@headlessui/react";
 import { useState } from "react";
 
 export default function LoginForm() {
@@ -20,9 +21,23 @@ export default function LoginForm() {
       e.preventDefault();
       handleSubmit()
     }}>
-      <input className="border border-gray-400 rounded p-1 mr-2" value={form?.username} onChange={(e) => handleInputChange("username", e.target.value)} type="string" placeholder="username" name="username" />
-      <input className="border border-gray-400 rounded p-1 mr-2" value={form?.password} onChange={(e) => handleInputChange("password", e.target.value)} type="password" placeholder="password" name="password" />
-      <button className="cursor-pointer">Login</button>
+      <Field>
+        <Label className="w-52">
+          Username
+        </Label>
+        <div>
+          <input className="border border-gray-400 rounded p-1 mr-2" value={form?.username} onChange={(e) => handleInputChange("username", e.target.value)} type="string" placeholder="username" name="username" />
+        </div>
+      </Field>
+      <Field className="mt-4">
+        <Label>
+          Password
+        </Label>
+        <div>
+          <input className="border border-gray-400 rounded p-1 mr-2" value={form?.password} onChange={(e) => handleInputChange("password", e.target.value)} type="password" placeholder="password" name="password" />
+        </div>
+      </Field>
+      <Button type="submit" className="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-xl mt-4">Login</Button>
       {error && <p className="text-red-500 text-sm leading-4">{error}</p>}
     </form>
   );

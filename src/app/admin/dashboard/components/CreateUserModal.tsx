@@ -78,7 +78,7 @@ const CreateTeamModal = ({ toggle }: Props) => {
               <input
                 className="border border-gray-400 rounded p-1 mr-2"
                 value={userData?.password}
-                onChange={(e) => handleInputChange('username', e.target.value)}
+                onChange={(e) => handleInputChange('password', e.target.value)}
                 type="password"
                 placeholder="password"
                 name="password"

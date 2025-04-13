@@ -8,7 +8,6 @@ import db from "@/lib/db";
 import bcrypt from "bcryptjs";
 
 export async function login(formData: { username: string, password: string }) {
-
   const session = await getSession();
 
   const { username, password } = formData;

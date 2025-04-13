@@ -2,9 +2,9 @@ import LoginForm from "./components/LoginForm";
 
 const LoginPage = async () => {
   return (
-    <div className="w-full flex justify-center">
-      <div className="bg-white rounded-xl">
-        <h1 className="text-xl mb-2">Login Page</h1>
+    <div className="min-h-screen w-full flex items-center justify-center">
+      <div className="bg-white rounded-xl p-6">
+        <h1 className="text-xl mb-4">Login</h1>
         <LoginForm />
       </div>
     </div>
