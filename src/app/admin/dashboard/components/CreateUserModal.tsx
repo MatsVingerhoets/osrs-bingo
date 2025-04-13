@@ -26,8 +26,6 @@ const CreateTeamModal = ({ toggle }: Props) => {
   const handleSubmit = async () => {
     setLoading(true)
     const result = createUserSchema.safeParse(userData);
-
-    console.log(result)
     if (!result.success) {
       const formattedErrors = result.error.flatten().fieldErrors;
       setErrors({
