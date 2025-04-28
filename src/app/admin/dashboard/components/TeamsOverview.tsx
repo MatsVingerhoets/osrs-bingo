@@ -6,12 +6,14 @@ import { useState } from "react"
 import CreateTeamModal from "./CreateTeamModal"
 import TeamDetailsModal from "./TeamDetailsModal"
 import { User } from "@/models/User"
+import { Board } from "@/models/Board"
 
 type Props = {
   teams: Team[]
   users: Omit<User, 'password'>[]
+  boards: Board[]
 }
-const TeamsOverview = ({ teams, users }: Props) => {
+const TeamsOverview = ({ teams, users, boards }: Props) => {
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null)
   const [createTeamModalOpen, setCreateTeamModalOpen] = useState(false)
   const toggleCreateTeamModal = () => setCreateTeamModalOpen((prev) => !prev);
@@ -40,7 +42,7 @@ const TeamsOverview = ({ teams, users }: Props) => {
         <CreateTeamModal toggle={toggleCreateTeamModal} />
       )}
       {teamDetailModalOpen && selectedTeam && (
-        <TeamDetailsModal users={users} team={selectedTeam} toggle={toggleTeamDetailModal} />
+        <TeamDetailsModal users={users} boards={boards} team={selectedTeam} toggle={toggleTeamDetailModal} />
       )}
     </div>
   )

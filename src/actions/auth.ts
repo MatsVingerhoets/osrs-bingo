@@ -33,7 +33,6 @@ export async function login(formData: { username: string, password: string }) {
     'team_id': user.team_id
   };
 
-  console.log("success")
   // Save the session before redirecting
   await session.save();
 

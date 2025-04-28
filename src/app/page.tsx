@@ -1,4 +1,5 @@
 import { getSession } from "@/actions/auth";
+import { getBoardById } from "@/actions/boards";
 import { getTeamById } from "@/actions/teams";
 import { getUserById } from "@/actions/users";
 import Board from "@/components/Board";
@@ -17,12 +18,14 @@ export default async function Home() {
     redirect('/login');
   }
   const team = user.team_id ? await getTeamById(user.team_id) : null
+  const board = team?.board_id ? await getBoardById(team?.board_id) : null
+  console.log({ team })
   return (
     <div className="flex justify-center flex-col h-full">
       <Navigation user={dbUser} />
       {user.team_id ? (
         <div className="flex p-10 h-full">
-          <Board />
+          {board && <Board playedBoard={board} />}
           {team && <TeamStats team={team} />}
         </div>
       ) : (

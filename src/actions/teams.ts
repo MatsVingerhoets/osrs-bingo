@@ -27,6 +27,16 @@ export async function assignUserToTeam(userId: number, teamId: number) {
   revalidatePath('/admin/dashboard')
 }
 
+export async function assignBoardToTeam(boardId: number, teamId: number) {
+  await db
+    .updateTable('teams')
+    .set({ board_id: boardId })
+    .where('id', '=', teamId)
+    .executeTakeFirstOrThrow()
+
+  revalidatePath('/admin/dashboard')
+}
+
 export async function getTeamById(id: number) {
   return await db
     .selectFrom('teams')

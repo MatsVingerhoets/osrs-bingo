@@ -27,7 +27,6 @@ const UsersOverview = ({ users }: Props) => {
         <CreateUserModal toggle={toggleUserModal} />
       )}
     </div>
-
   )
 }
 export default UsersOverview

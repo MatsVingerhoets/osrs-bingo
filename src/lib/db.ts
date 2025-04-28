@@ -2,10 +2,16 @@ import { UserModel } from '@/models/User';
 import { TeamModel } from '@/models/Team';
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
+import { TileCompletionModel } from '@/models/TileCompletion';
+import { TileModel } from '@/models/Tile';
+import { BoardModel } from '@/models/Board';
 
 interface Database {
   users: UserModel;
   teams: TeamModel
+  tiles: TileModel
+  tileCompletions: TileCompletionModel
+  boards: BoardModel
 }
 
 const isProd = process.env.NODE_ENV === 'production';

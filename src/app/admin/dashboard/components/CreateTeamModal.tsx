@@ -25,7 +25,6 @@ const CreateTeamModal = ({ toggle }: Props) => {
     setLoading(true)
     const result = createTeamSchema.safeParse(teamData);
 
-    console.log(result)
     if (!result.success) {
       const formattedErrors = result.error.flatten().fieldErrors;
       setErrors({ name: formattedErrors.name?.[0] || "" })
