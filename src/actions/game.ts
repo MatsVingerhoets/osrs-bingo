@@ -1,9 +1,9 @@
 'use server'
 
-import { tiles } from "../../db/tiles";
+import { tiles } from "@/data/tiles";
 import db from "@/lib/db";
 
-export async function createGame() {
+export async function createBoard() {
   try {
     const initialBoardConfig = [
       { rowIndex: 0, tiles: [1, 2, 3, 4, 5, 6], shift: 6 },
@@ -20,14 +20,33 @@ export async function createGame() {
       { rowIndex: 11, tiles: [102, 103, 104, 105, 106, 107, 108], shift: 5 },
     ]
     await db.insertInto('boards').values({ name: "KnS", config: initialBoardConfig }).execute();
-    for (const tile of tiles) {
-      const { adjacentTiles, ...rest } = tile
-      await db.insertInto('tiles').values({ ...rest, adjacent_tiles: adjacentTiles, board_id: 1 }).execute();
-      console.log(`Inserted tile: ${tile.id}`);
-    }
     return 'success'
   } catch (e) {
     return e
   }
 }
+export async function createTiles() {
+  try {
+    // Map tiles into the format your DB expects
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const insertableTiles = tiles.map(({ adjacentTiles, hidden, id, ...rest }) => ({
+      ...rest,
+      adjacent_tiles: adjacentTiles,
+      board_id: 1,
+    }));
 
+    // Insert in batches of 25
+    const BATCH_SIZE = 25;
+    for (let i = 0; i < insertableTiles.length; i += BATCH_SIZE) {
+      const batch = insertableTiles.slice(i, i + BATCH_SIZE);
+      await db.insertInto("tiles").values(batch).execute();
+      console.log(`Inserted batch ${i / BATCH_SIZE + 1}`);
+    }
+
+    return "success";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    console.error("Insert error:", e);
+    return e.message;
+  }
+}

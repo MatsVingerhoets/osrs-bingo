@@ -5,7 +5,6 @@ export type TileModel = {
   label: string
   url: string
   color: string
-  hidden: boolean
   adjacent_tiles: number[]
   points: number
   board_id: number

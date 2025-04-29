@@ -21,12 +21,13 @@ export default async function Home() {
   const team = user.team_id ? await getTeamById(user.team_id) : null
   const board = team?.board_id ? await getBoardById(team?.board_id) : null
   const tiles = (board?.id && team?.id) ? await getTilesWithCompletions(board.id, user.id, team.id) : null
+  console.log({ tiles })
   return (
     <div className="flex justify-center flex-col h-full">
       <Navigation user={dbUser} />
       {user.team_id ? (
         <div className="flex p-10 h-full">
-          {(board && tiles) && <Board tiles={tiles} user={user} playedBoard={board} />}
+          {(board && tiles && tiles.length > 0) && <Board tiles={tiles} user={user} playedBoard={board} />}
           {team && <TeamStats team={team} />}
         </div>
       ) : (

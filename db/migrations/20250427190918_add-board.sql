@@ -2,9 +2,7 @@
 CREATE TABLE boards (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    config JSONB[] NOT NULL,
-    team_id INTEGER,
-    CONSTRAINT fk_team FOREIGN KEY (team_id) REFERENCES teams(id) ON DELETE SET NULL
+    config JSONB[] NOT NULL
 );
 
 -- migrate:down
