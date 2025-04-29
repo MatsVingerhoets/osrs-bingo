@@ -6,6 +6,7 @@ import Navigation from "@/components/navigation/Navigation";
 import UsersOverview from "./components/UsersOverview";
 import { getUsers } from "@/actions/users";
 import { getBoards } from "@/actions/boards";
+import GameSettings from "./components/GameSettings";
 
 const DashboardPage = async () => {
   const session = await getSession();
@@ -23,7 +24,7 @@ const DashboardPage = async () => {
       <div className="container p-10 flex items-center flex-col gap-6">
         <TeamsOverview users={users} teams={teams} boards={boards} />
         <UsersOverview users={users} />
-        {/* <GameSettings boards={boards} teams={teams} /> */}
+        <GameSettings />
       </div>
     </ >
   )

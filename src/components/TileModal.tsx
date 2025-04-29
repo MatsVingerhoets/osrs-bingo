@@ -3,49 +3,43 @@
 import { Button, Dialog, DialogPanel, DialogTitle, Field, Input, Label } from "@headlessui/react"
 import { Dispatch, SetStateAction, useState } from "react"
 import { MdClose } from "react-icons/md"
-import { BoardConfig } from "./types"
+import { User } from "@/models/User"
+import { postTileCompletion } from "@/actions/tile"
+import { updateTileVisibility } from "@/app/util"
+import { RowConfigWithHidden } from "./types"
 
 type Props = {
   onClose: () => void
   title: string
-  setBoardConfig: Dispatch<SetStateAction<BoardConfig>>
+  setBoardConfig: Dispatch<SetStateAction<RowConfigWithHidden[]>>
   tileId: number
+  user: Omit<User, 'password'>
+  points: number
 }
-const TileModal = ({ tileId, setBoardConfig, onClose, title }: Props) => {
+const TileModal = ({ points, user, tileId, setBoardConfig, onClose, title }: Props) => {
   const [formValues, setFormValues] = useState({ link: "" })
   const handleFormChange = (field: string, value: string) => {
     setFormValues(prev => ({ ...prev, [field]: value }))
   }
-  const handleSubmit = () => {
-    setBoardConfig((prevBoard) =>
-      prevBoard.map((row) => ({
+
+  const handleSubmit = async () => {
+    setBoardConfig(prevBoard => {
+      // Mark the selected tile as completed
+      const updatedBoard = prevBoard.map(row => ({
         ...row,
-        tiles: row.tiles.map((tile) => {
-          // Reveal adjacent tiles
-          const isAdjacentToClicked = prevBoard.some((r) =>
-            r.tiles.some(
-              (t) =>
-                t.id === tileId &&
-                t.adjacentTiles.includes(tile.id)
-            )
-          );
+        tiles: row.tiles.map(tile =>
+          tile.tile_id === tileId ? { ...tile, completed: true } : tile
+        ),
+      }));
 
-          // Complete the clicked tile
-          if (tile.id === tileId) {
-            return { ...tile, completed: true };
-          }
+      // Update visibility based on completed tiles
+      return updateTileVisibility(updatedBoard);
+    });
 
-          if (isAdjacentToClicked) {
-            return { ...tile, hidden: false };
-          }
+    await postTileCompletion({ proof: formValues.link, user_id: user.id, tile_id: tileId });
+    onClose();
+  };
 
-          return tile;
-        }),
-      }))
-    );
-    onClose()
-  }
-  //TODO: show who completed it if it is already completed
   return (
     <Dialog open={true} onClose={onClose} className="relative z-50">
       <div className="fixed inset-0 flex items-center w-screen justify-center p-4 bg-gray-800/[var(--bg-opacity)] [--bg-opacity:25%]">
@@ -54,6 +48,7 @@ const TileModal = ({ tileId, setBoardConfig, onClose, title }: Props) => {
             {title}
             <MdClose className="hover:cursor-pointer w-6 hover:bg-gray-100 rounded-full" onClick={onClose} />
           </DialogTitle>
+          <p className="font-semibold mb-4">This is worth {points} point(s)</p>
           <form
             onSubmit={(e) => {
               e.preventDefault();

@@ -4,7 +4,6 @@ CREATE TABLE tiles (
     label TEXT NOT NULL,
     url TEXT NOT NULL,
     color TEXT NOT NULL,
-    hidden BOOLEAN NOT NULL,
     adjacent_tiles INTEGER[] NOT NULL,
     points INTEGER NOT NULL,
     board_id INT REFERENCES boards(id)
@@ -14,7 +13,8 @@ CREATE TABLE tile_completions (
   id SERIAL PRIMARY KEY,
   user_id INT REFERENCES users(id),
   tile_id INT REFERENCES tiles(id),
-  completion_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  proof TEXT NOT NULL, 
+  completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- migrate:down

@@ -1,6 +1,7 @@
 import { getSession } from "@/actions/auth";
 import { getBoardById } from "@/actions/boards";
 import { getTeamById } from "@/actions/teams";
+import { getTilesWithCompletions } from "@/actions/tile";
 import { getUserById } from "@/actions/users";
 import Board from "@/components/Board";
 import Navigation from "@/components/navigation/Navigation";
@@ -19,13 +20,13 @@ export default async function Home() {
   }
   const team = user.team_id ? await getTeamById(user.team_id) : null
   const board = team?.board_id ? await getBoardById(team?.board_id) : null
-  console.log({ team })
+  const tiles = (board?.id && team?.id) ? await getTilesWithCompletions(board.id, user.id, team.id) : null
   return (
     <div className="flex justify-center flex-col h-full">
       <Navigation user={dbUser} />
       {user.team_id ? (
         <div className="flex p-10 h-full">
-          {board && <Board playedBoard={board} />}
+          {(board && tiles) && <Board tiles={tiles} user={user} playedBoard={board} />}
           {team && <TeamStats team={team} />}
         </div>
       ) : (

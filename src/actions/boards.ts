@@ -13,3 +13,4 @@ export async function getBoardById(id: number) {
     .where('id', '=', id)
     .executeTakeFirst();
 }
+

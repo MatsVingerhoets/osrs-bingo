@@ -10,7 +10,7 @@ interface Database {
   users: UserModel;
   teams: TeamModel
   tiles: TileModel
-  tileCompletions: TileCompletionModel
+  tile_completions: TileCompletionModel
   boards: BoardModel
 }
 

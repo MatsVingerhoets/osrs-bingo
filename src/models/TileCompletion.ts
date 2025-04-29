@@ -2,10 +2,9 @@ import { Generated } from "kysely";
 
 export interface TileCompletionModel {
   id: Generated<number>;
-  tileId: string;
-  teamId: string;
-  completedByUserId: string;
-  completedAt: Date;
+  tile_id: number;
+  user_id: number;
+  completed_at: Date;
 }
 
 export type TileCompletion = Omit<TileCompletionModel, 'id'> & {

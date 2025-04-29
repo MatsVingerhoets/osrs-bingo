@@ -1,12 +1,13 @@
 'use client'
 
+import { createGame } from "@/actions/game"
 import { Button } from "@headlessui/react"
 
 const GameSettings = () => {
   const handleClick = async () => {
     try {
       await createGame()
-
+      console.log("success")
     } catch (e) {
       console.log(e)
     }
