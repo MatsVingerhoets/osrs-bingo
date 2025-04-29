@@ -13,7 +13,7 @@ export async function postTileCompletion(values: { proof: string, user_id: numbe
 
   revalidatePath("/");
 }
-export async function getTilesWithCompletions(boardId: number, userId: number, teamId: number) {
+export async function getTilesWithCompletions(boardId: number, teamId: number) {
   return await db
     .selectFrom('users')
     .innerJoin('teams', 'users.team_id', 'teams.id')
@@ -37,7 +37,6 @@ export async function getTilesWithCompletions(boardId: number, userId: number, t
       'tile_completions.completed_at',
       'completion_user.username as completed_by',
     ])
-    .where('users.id', '=', userId)
     .where('boards.id', '=', boardId)
     .where('teams.id', '=', teamId)
     .execute();

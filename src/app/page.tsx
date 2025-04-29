@@ -20,7 +20,7 @@ export default async function Home() {
   }
   const team = user.team_id ? await getTeamById(user.team_id) : null
   const board = team?.board_id ? await getBoardById(team?.board_id) : null
-  const tiles = (board?.id && team?.id) ? await getTilesWithCompletions(board.id, user.id, team.id) : null
+  const tiles = (board?.id && team?.id) ? await getTilesWithCompletions(board.id, team.id) : null
   console.log({ tiles })
   return (
     <div className="flex justify-center flex-col h-full">
