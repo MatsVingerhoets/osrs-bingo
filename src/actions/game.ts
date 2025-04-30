@@ -29,7 +29,7 @@ export async function createTiles() {
   try {
     // Map tiles into the format your DB expects
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const insertableTiles = tiles.map(({ adjacentTiles, hidden, id, ...rest }) => ({
+    const insertableTiles = tiles.map(({ adjacentTiles, id, ...rest }) => ({
       ...rest,
       adjacent_tiles: adjacentTiles,
       board_id: 1,
