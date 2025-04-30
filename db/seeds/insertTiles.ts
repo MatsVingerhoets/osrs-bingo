@@ -1,5 +1,5 @@
+import { tiles } from '@/data/tiles';
 import db from '../../src/lib/db';
-import { tiles } from '../tiles';
 
 async function insertTiles() {
   try {

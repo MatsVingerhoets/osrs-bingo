@@ -20,9 +20,11 @@ export async function createBoard() {
       { rowIndex: 11, tiles: [102, 103, 104, 105, 106, 107, 108], shift: 5 },
     ]
     await db.insertInto('boards').values({ name: "KnS", config: initialBoardConfig }).execute();
-    return 'success'
-  } catch (e) {
-    return e
+    return { succes: "successfullly created board and tiles" };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+
+    return { error: e.message };
   }
 }
 export async function createTiles() {
@@ -43,10 +45,9 @@ export async function createTiles() {
       console.log(`Inserted batch ${i / BATCH_SIZE + 1}`);
     }
 
-    return "success";
+    return { succes: "successfullly created board and tiles" };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    console.error("Insert error:", e);
-    return e.message;
+    return { error: e.message };
   }
 }

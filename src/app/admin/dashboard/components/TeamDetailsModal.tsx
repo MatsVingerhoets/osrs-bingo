@@ -23,23 +23,13 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
   const filteredUsers = users.filter(user => user.team_id !== team.id)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null)
-  const handleAddUser = async () => {
+  const handleSubmit = async () => {
     setLoading(true)
-    try {
-      if (!selectedUser) return
-      await assignUserToTeam(selectedUser.id, team.id)
-      setLoading(false)
-    } catch (e) {
-      console.error("Could not assign user to team", e)
-      setLoading(false)
-    }
-  }
-  const handleAddBoard = async () => {
-    setLoading(true)
-    console.log({ selectedBoard })
     try {
       if (!selectedBoard) return
+      if (!selectedUser) return
       await assignBoardToTeam(selectedBoard.id, team.id)
+      await assignUserToTeam(selectedUser.id, team.id)
       setLoading(false)
     } catch (e) {
       console.error("Could not assign user to team", e)
@@ -71,16 +61,6 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
             </ListboxOptions>
           </Listbox>
         </div>
-        <Button onClick={handleAddUser} className='h-fit cursor-pointer rounded-xl px-4 py-2 w-fit bg-blue-600 text-white'>
-          {loading && <SpinnerIcon />}
-          <span>Add a user</span>
-        </Button>
-      </div>
-      <div>
-        <h2>Users from this team:</h2>
-        {teamUsers.map(user => (
-          <div key={user.id}>{user.username}</div>
-        ))}
       </div>
       {/* board selection */}
       <div className="flex">
@@ -105,14 +85,21 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
             </ListboxOptions>
           </Listbox>
         </div>
-        <Button onClick={handleAddBoard} className='h-fit cursor-pointer rounded-xl px-4 py-2 w-fit bg-blue-600 text-white'>
-          {loading && <SpinnerIcon />}
-          <span>Add a board</span>
-        </Button>
       </div>
+      <Button onClick={handleSubmit} className='h-fit cursor-pointer rounded-xl px-4 py-2 w-fit bg-blue-600 text-white'>
+        {loading && <SpinnerIcon />}
+        <span>Submit</span>
+      </Button>
       <div>
         <h2>Selected Board:</h2>
         {boards.find(board => board.id === team.board_id)?.name || ''}
+      </div>
+
+      <div>
+        <h2>Users from this team:</h2>
+        {teamUsers.map(user => (
+          <div key={user.id}>{user.username}</div>
+        ))}
       </div>
     </GenericModal>
   )

@@ -23,8 +23,8 @@ const Board = ({ tiles, user, playedBoard }: Props) => {
   );
   const gap = 8;
 
-  // also save completed tiles to db
   const [boardConfig, setBoardConfig] = useState<RowConfigWithHidden[]>(initialBoardConfig);
+
   // Calculated values
   const rowHeight = TILESIZE * 0.75 + gap; // vertical offset per row
   const colOffset = TILESIZE / 2 + gap / 2; // left shift for odd rows
