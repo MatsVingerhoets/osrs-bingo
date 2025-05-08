@@ -21,8 +21,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.boards (
     id integer NOT NULL,
     name text NOT NULL,
-    config jsonb[] NOT NULL,
-    team_id integer
+    config jsonb[] NOT NULL
 );
 
 
@@ -128,7 +127,6 @@ CREATE TABLE public.tiles (
     label text NOT NULL,
     url text NOT NULL,
     color text NOT NULL,
-    hidden boolean NOT NULL,
     adjacent_tiles integer[] NOT NULL,
     points integer NOT NULL,
     board_id integer
@@ -224,6 +222,14 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 
 
 --
+-- Name: boards boards_name_key; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.boards
+    ADD CONSTRAINT boards_name_key UNIQUE (name);
+
+
+--
 -- Name: boards boards_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -277,14 +283,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_username_key UNIQUE (username);
-
-
---
--- Name: boards fk_team; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.boards
-    ADD CONSTRAINT fk_team FOREIGN KEY (team_id) REFERENCES public.teams(id) ON DELETE SET NULL;
 
 
 --

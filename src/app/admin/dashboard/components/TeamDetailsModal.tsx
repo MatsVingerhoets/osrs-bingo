@@ -21,15 +21,17 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
   const [loading, setLoading] = useState(false)
   const teamUsers = users.filter(user => user.team_id === team.id)
   const filteredUsers = users.filter(user => user.team_id !== team.id)
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [selectedUsers, setSelectedUsers] = useState<User[] | null>(null)
   const [selectedBoard, setSelectedBoard] = useState<Board | null>(null)
   const handleSubmit = async () => {
     setLoading(true)
     try {
       if (!selectedBoard) return
-      if (!selectedUser) return
+      if (!selectedUsers) return
       await assignBoardToTeam(selectedBoard.id, team.id)
-      await assignUserToTeam(selectedUser.id, team.id)
+      for (const user of selectedUsers) {
+        await assignUserToTeam(user.id, team.id)
+      }
       setLoading(false)
     } catch (e) {
       console.error("Could not assign user to team", e)
@@ -41,9 +43,14 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
       {/* user selection */}
       <div className="flex">
         <div className="flex-1 mr-4">
-          <Listbox value={selectedUser} onChange={setSelectedUser}>
+          <Listbox value={selectedUsers} onChange={setSelectedUsers} multiple>
             <ListboxButton className="w-full mb-1 border border-gray-300 rounded px-3 py-2 text-left flex justify-between items-center">
-              <span>{selectedUser ? selectedUser.username : "Select a user"}</span>
+              {(selectedUsers && selectedUsers.length > 0) ? selectedUsers.map(user => (
+                <span key={user.id}>{user.username}</span>
+              )) : (
+                <span>{"Select a user"}</span>
+              )
+              }
               <MdOutlineArrowDownward className="ml-2 text-gray-500" />
             </ListboxButton>
             <ListboxOptions className="border border-gray-300 rounded shadow bg-white max-h-60 overflow-auto">

@@ -1,9 +1,10 @@
+
 import { RowConfig } from "@/components/types";
 
 export const updateTileVisibility = (boardConfig: RowConfig[]) => {
-  const alwaysVisible = new Set([46, 57, 58]); // Tiles that are always visible
+  const alwaysVisible = new Set([46, 57, 58]);
 
-  // Step 1: Collect IDs of completed tiles
+  // Collect completed tile IDs
   const completedTileIds = new Set<number>();
   boardConfig.forEach(row => {
     row.tiles.forEach(tile => {
@@ -13,7 +14,10 @@ export const updateTileVisibility = (boardConfig: RowConfig[]) => {
     });
   });
 
-  // Step 2: Update hidden status based on adjacent tiles
+  // Flatten all tiles for easier global lookup
+  const allTiles = boardConfig.flatMap(row => row.tiles);
+  const tileMap = new Map(allTiles.map(tile => [tile.tile_id, tile]));
+
   return boardConfig.map(row => ({
     ...row,
     tiles: row.tiles.map(tile => {
@@ -21,8 +25,13 @@ export const updateTileVisibility = (boardConfig: RowConfig[]) => {
         return { ...tile, hidden: false };
       }
 
-      const shouldReveal = tile.adjacent_tiles.some(adjId => completedTileIds.has(adjId));
-      return { ...tile, hidden: !shouldReveal };
+      // Check if this tile is adjacent to a completed tile (reverse logic)
+      const isAdjacentToCompleted = [...completedTileIds].some(completedId => {
+        const completedTile = tileMap.get(completedId);
+        return completedTile?.adjacent_tiles.includes(tile.tile_id);
+      });
+
+      return { ...tile, hidden: !isAdjacentToCompleted };
     }),
   }));
 };
