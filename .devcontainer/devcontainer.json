@@ -1,8 +1,6 @@
 {
   "name": "nvim-devcontainer",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "dockerComposeFile": "../docker-compose.yml",
   "settings": {},
   "extensions": [],
   "mounts": [

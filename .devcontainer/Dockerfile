@@ -1,5 +1,5 @@
 # Start from Debian image
-FROM debian:bullseye
+FROM ubuntu:22.04 
 
 # Install base packages and tools needed for Neovim plugins and Zsh
 RUN apt-get update && apt-get install -y \
@@ -40,9 +40,6 @@ RUN brew install neovim
 
 # Clone your Neovim config (assuming you have it on GitHub)
 RUN git clone https://github.com/MatsVingerhoets/nvim.git /root/.config/nvim
-
-# Install dependencies with npm (instead of yarn)
-RUN npm install -g neovim  # Install neovim npm package globally, if needed
 
 # Clone dotfiles and copy the zshrc file
 RUN git clone https://github.com/MatsVingerhoets/dotfiles.git /root/dotfiles
