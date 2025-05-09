@@ -46,11 +46,43 @@ ALTER SEQUENCE public.boards_id_seq OWNED BY public.boards.id;
 
 
 --
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id integer NOT NULL,
+    name text NOT NULL,
+    start_time timestamp without time zone NOT NULL,
+    duration_minutes integer NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schema_migrations (
-    version character varying(128) NOT NULL
+    version character varying NOT NULL
 );
 
 
@@ -61,7 +93,8 @@ CREATE TABLE public.schema_migrations (
 CREATE TABLE public.teams (
     id integer NOT NULL,
     name text NOT NULL,
-    board_id integer
+    board_id integer,
+    event_id integer
 );
 
 
@@ -194,6 +227,13 @@ ALTER TABLE ONLY public.boards ALTER COLUMN id SET DEFAULT nextval('public.board
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: teams id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -235,6 +275,14 @@ ALTER TABLE ONLY public.boards
 
 ALTER TABLE ONLY public.boards
     ADD CONSTRAINT boards_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -302,6 +350,14 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: teams teams_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT teams_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(id) ON DELETE SET NULL;
+
+
+--
 -- Name: tile_completions tile_completions_tile_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -341,4 +397,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20250413105254'),
     ('20250427190918'),
     ('20250427191715'),
-    ('20250428060507');
+    ('20250428060507'),
+    ('20250430155811');

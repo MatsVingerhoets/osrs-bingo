@@ -1,21 +1,28 @@
-version: '3.8'
-
 services:
   app:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
-    environment:
-      - DATABASE_URL=postgresql://postgres:@postgres:5432/osrs-bingo?schema=public
+    ports:
+      - 3000:3000
     volumes:
-      - .:/workspace
-    command: sleep infinity
+      - ${SSH_PATH}:/root/.ssh:ro
+      - /workspace/node_modules
+      - workspace-data:/workspace
+      - ${ZSHRC_PATH:-/dev/null}:/root/.zshrc
+      - ${NEOVIM_CONFIG_PATH:-/dev/null}:/root/.config/nvim
+      - nvim-data:/root/.local/share/nvim # Persist plugins
+      - nvim-state:/root/.local/state/nvim
+      - nvim-cache:/root/.cache/nvim
+    stdin_open: true
+    tty: true
+    command: zsh
+    env_file:
+      - .env
     networks:
       - devnet
     depends_on:
       - postgres
-    env_file:
-      - .env.local
 
   postgres:
     container_name: osrs-bingo_postgres
@@ -23,7 +30,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=  # Empty password is fine here
+      - POSTGRES_PASSWORD= # Empty password is fine here
       - POSTGRES_DB=osrs-bingo
     ports:
       - 5432:5432
@@ -47,6 +54,11 @@ services:
 
 volumes:
   postgres:
+  nvim-data:
+  nvim-state:
+  nvim-cache:
+  workspace-data:
+
 
 networks:
   devnet:
