@@ -1,5 +1,6 @@
 services:
   app:
+    working_dir: /osrs-bingo
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -7,8 +8,7 @@ services:
       - 3000:3000
     volumes:
       - ${SSH_PATH}:/root/.ssh:ro
-      - /workspace/node_modules
-      - workspace-data:/workspace
+      - osrs-bingo-data:/osrs-bingo
       - ${ZSHRC_PATH:-/dev/null}:/root/.zshrc
       - ${NEOVIM_CONFIG_PATH:-/dev/null}:/root/.config/nvim
       - nvim-data:/root/.local/share/nvim # Persist plugins
@@ -57,7 +57,7 @@ volumes:
   nvim-data:
   nvim-state:
   nvim-cache:
-  workspace-data:
+  osrs-bingo-data:
 
 
 networks:

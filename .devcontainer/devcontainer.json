@@ -1,10 +1,14 @@
 {
-  "name": "nvim-devcontainer",
+  "name": "osrs-bingo-devcontainer",
   "dockerComposeFile": "../docker-compose.yml",
-  "settings": {},
-  "extensions": [],
-  "mounts": [
-    "source=${localWorkspaceFolder},target=/workspace,type=bind"
-  ],
-  "remoteUser": "root"
+  "service": "app",
+  "workspaceFolder": "/osrs-bingo",
+  "remoteUser": "root",
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "zsh"
+  },
+  "extensions": [
+    "ms-azuretools.vscode-docker",
+    "esbenp.prettier-vscode"
+  ]
 }
