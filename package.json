@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -H 0.0.0.0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "docker compose run --rm dbmate up",
+    "migrate": "dbmate up",
     "migrate:revert": "docker compose run --rm dbmate down",
     "new:migration": "docker compose run --rm dbmate new",
     "migrate:supabase": "ts-node src/lib/migrateSupabase.mjs"

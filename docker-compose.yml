@@ -3,10 +3,11 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
-    environment:
-      - DATABASE_URL=postgresql://postgres:@postgres:5432/osrs-bingo?schema=public
+    ports:
+      - 3000:3000
     volumes:
-      - .:/workspace
+      - ${SSH_PATH}:/root/.ssh:ro
+      - /workspace/node_modules
       - ${ZSHRC_PATH:-/dev/null}:/root/.zshrc
       - ${NEOVIM_CONFIG_PATH:-/dev/null}:/root/.config/nvim
       - nvim-data:/root/.local/share/nvim # Persist plugins
@@ -15,6 +16,8 @@ services:
     stdin_open: true
     tty: true
     command: zsh
+    env_file:
+      - .env
     networks:
       - devnet
     depends_on:
@@ -53,6 +56,7 @@ volumes:
   nvim-data:
   nvim-state:
   nvim-cache:
+  workspace-sync:
 
 
 networks:
