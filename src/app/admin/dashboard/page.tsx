@@ -22,7 +22,6 @@ const DashboardPage = async () => {
     <>
       <Navigation user={session.user} />
       <div className="container p-10 flex items-center flex-col gap-6">
-        REEEEEEEEE
         <TeamsOverview users={users} teams={teams} boards={boards} />
         <UsersOverview users={users} />
         <GameSettings />
