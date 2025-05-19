@@ -48,9 +48,7 @@ ENV HOMEBREW_NO_ANALYTICS=1
 RUN brew install neovim
 
 # Install fzf
-RUN git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf && \
-  /opt/fzf/install --all --no-bash --no-fish && \
-  ln -s /opt/fzf /root/.fzf
+RUN brew install fzf
 
 RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
   -o /usr/local/bin/dbmate && \
