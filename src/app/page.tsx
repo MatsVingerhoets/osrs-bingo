@@ -1,7 +1,7 @@
 import { getSession } from "@/actions/auth";
 import { getBoardById } from "@/actions/boards";
 import { getTeamById } from "@/actions/teams";
-import { getTilesWithCompletions } from "@/actions/tile";
+import { getTilesWithCompletions } from "@/actions/tiles";
 import { getUserById } from "@/actions/users";
 import Board from "@/components/Board";
 import Navigation from "@/components/navigation/Navigation";

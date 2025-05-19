@@ -38,6 +38,7 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
       setLoading(false)
     }
   }
+  console.log({ filteredUsers })
   return (
     <GenericModal title={team.name} onClose={toggle}>
       {/* user selection */}
@@ -58,9 +59,7 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
                 <ListboxOption
                   key={user.id}
                   value={user}
-                  className={({ active }) =>
-                    `px-4 py-2 cursor-pointer ${active ? 'bg-blue-100' : ''}`
-                  }
+                  className='px-4 py-2 cursor-pointerdata-focus:bg-blue-100'
                 >
                   {user.username}
                 </ListboxOption>
@@ -82,9 +81,7 @@ const CreateTeamModal = ({ toggle, team, users, boards }: Props) => {
                 <ListboxOption
                   key={board.id}
                   value={board}
-                  className={({ active }) =>
-                    `px-4 py-2 cursor-pointer ${active ? 'bg-blue-100' : ''}`
-                  }
+                  className='px-4 py-2 cursor-pointer data-focus:bg-blue-100'
                 >
                   {board.name}
                 </ListboxOption>

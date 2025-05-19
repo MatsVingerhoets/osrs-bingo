@@ -4,7 +4,7 @@ import { Button, Dialog, DialogPanel, DialogTitle, Field, Input, Label } from "@
 import { Dispatch, SetStateAction, useState } from "react"
 import { MdClose } from "react-icons/md"
 import { User } from "@/models/User"
-import { postTileCompletion } from "@/actions/tile"
+import { postTileCompletion } from "@/actions/tiles"
 import { updateTileVisibility } from "@/app/util"
 import { RowConfigWithHidden } from "./types"
 
