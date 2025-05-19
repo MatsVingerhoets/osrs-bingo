@@ -6,15 +6,15 @@ CREATE TABLE events (
     duration_minutes INTEGER NOT NULL
 );
 
--- Add event_id column to teams table
-ALTER TABLE teams
+-- Add event_id column to boards table
+ALTER TABLE boards 
 ADD COLUMN event_id INTEGER REFERENCES events(id) ON DELETE SET NULL;
 
 -- migrate:down
 DROP TABLE events;
 
-ALTER TABLE teams 
-DROP CONSTRAINT IF EXISTS fk_teams_event;
+ALTER TABLE boards 
+DROP CONSTRAINT IF EXISTS fk_boards_event;
 
-ALTER TABLE teams 
+ALTER TABLE boards 
 DROP COLUMN IF EXISTS event_id;

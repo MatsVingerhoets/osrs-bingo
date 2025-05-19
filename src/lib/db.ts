@@ -5,13 +5,15 @@ import { Pool } from 'pg';
 import { TileCompletionModel } from '@/models/TileCompletion';
 import { TileModel } from '@/models/Tile';
 import { BoardModel } from '@/models/Board';
+import { EventModel } from '@/models/Event';
 
-interface Database {
+export interface Database {
   users: UserModel;
   teams: TeamModel
   tiles: TileModel
   tile_completions: TileCompletionModel
   boards: BoardModel
+  events: EventModel
 }
 
 const isProd = process.env.NODE_ENV === 'production';

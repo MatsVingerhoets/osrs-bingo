@@ -1,22 +1,20 @@
 'use client'
 
-import { createBoard, createTiles } from "@/actions/game"
 import { Button } from "@headlessui/react"
 import { useState } from "react"
+import { createGame } from "@/actions/games"
 
 const GameSettings = () => {
   const [showAlert, setShowAlert] = useState(false)
   const [showErrorAlert, setShowErrorAlert] = useState<null | string>(null)
   const handleSubmit = async () => {
-    const boardResult = await createBoard()
-    const tilesResult = await createTiles()
-    if (boardResult.error || tilesResult.error) {
-      setShowErrorAlert(
-        `boardResult: ${boardResult.error}, tilesResult: ${tilesResult.error}`
-      );
-    } else {
-
+    const result = await createGame()
+    if (result.success) {
       setShowAlert(true)
+    } else {
+      setShowErrorAlert(
+        `Something went wrong`
+      );
     }
   }
   return (

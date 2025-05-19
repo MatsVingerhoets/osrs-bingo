@@ -18,7 +18,6 @@ async function createBoard() {
     ]
     await db.insertInto('boards').values({ name: "KnS", config: initialBoardConfig }).execute();
     console.log(`Inserted Board Kns`);
-    console.log('Tiles inserted successfully.');
   } catch (error) {
     console.error('Error inserting tiles:', error);
   } finally {

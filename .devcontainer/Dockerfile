@@ -52,7 +52,6 @@ RUN git clone --depth 1 https://github.com/junegunn/fzf.git /opt/fzf && \
   /opt/fzf/install --all --no-bash --no-fish && \
   ln -s /opt/fzf /root/.fzf
 
-# In your Dockerfile after installing curl/wget
 RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
   -o /usr/local/bin/dbmate && \
   chmod +x /usr/local/bin/dbmate
@@ -67,9 +66,10 @@ RUN curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Fi
   fc-cache -fv && \
   rm FiraCode.zip
 
-EXPOSE 3000
-# Set working directory
+COPY . /osrs-bingo-init
+COPY .devcontainer/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["zsh"]
 
-CMD [ "sh", "-c", "if [ ! -f /workspace/package.json ]; then cp -r /workspace-init/* /workspace; fi && exec zsh" ]
-COPY . /workspace-init
-COPY . .
+EXPOSE 3000

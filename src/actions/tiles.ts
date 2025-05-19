@@ -1,7 +1,9 @@
 'use server'
 
+import { tiles } from '@/data/tiles';
 import { revalidatePath } from "next/cache";
-import db from "@/lib/db";
+import db, { Database } from "@/lib/db";
+import { Transaction } from "kysely";
 import { sql } from "kysely";
 
 export async function postTileCompletion(values: { proof: string, user_id: number, tile_id: number }) {
@@ -41,3 +43,10 @@ export async function getTilesWithCompletions(boardId: number, teamId: number) {
     .where('teams.id', '=', teamId)
     .execute();
 }
+
+export async function createTiles(trx: Transaction<Database>, boardId: number) {
+  for (const tile of tiles) {
+    const { adjacentTiles, ...rest } = tile
+    await trx.insertInto('tiles').values({ ...rest, adjacent_tiles: adjacentTiles, board_id: boardId }).execute();
+  }
+} 
