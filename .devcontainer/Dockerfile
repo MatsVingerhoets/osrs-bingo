@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
   gnupg \
   lsb-release \
   fontconfig \
+  fzf \
   && apt-get clean
 
 # Set up locales
@@ -36,19 +37,24 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
   apt-get update && \
   apt-get install -y nodejs
 
-# Install Homebrew
-RUN git clone https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew && \
-  mkdir -p /home/linuxbrew/.linuxbrew/bin && \
-  ln -s /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew
+# Create non-root user for installing Homebrew safely
+RUN useradd -m builder && usermod -aG sudo builder
+USER builder
+WORKDIR /home/builder
 
-ENV PATH="/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:${PATH}"
+# Install Homebrew
+RUN git clone https://github.com/Homebrew/brew /home/builder/.linuxbrew/Homebrew && \
+  mkdir -p /home/builder/.linuxbrew/bin && \
+  ln -s /home/builder/.linuxbrew/Homebrew/bin/brew /home/builder/.linuxbrew/bin/brew
+
+ENV PATH="/home/builder/.linuxbrew/bin:/home/builder/.linuxbrew/sbin:${PATH}"
 ENV HOMEBREW_NO_ANALYTICS=1
 
-# Install Neovim via brew
+# Install Neovim and fzf via Homebrew
 RUN brew install neovim
 
-# Install fzf
-RUN brew install fzf
+# Return to root
+USER root
 
 RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
   -o /usr/local/bin/dbmate && \

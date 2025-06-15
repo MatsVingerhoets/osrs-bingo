@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack -H 0.0.0.0",
+    "dev:lan": "npm run dev --turbopack | sed 's/0\\.0\\.0\\.0/192.168.0.136/g'",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
