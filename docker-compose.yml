@@ -7,7 +7,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ${SSH_PATH}:/root/.ssh:ro
+      - ~/.ssh:/root/.ssh:ro
       - osrs-bingo-data:/osrs-bingo
       - ${ZSHRC_PATH:-/dev/null}:/root/.zshrc
       - ${NEOVIM_CONFIG_PATH:-/dev/null}:/root/.config/nvim
