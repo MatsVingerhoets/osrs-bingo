@@ -39,25 +39,17 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
   apt-get update && \
   apt-get install -y nodejs
 
-# Create non-root user for installing Homebrew safely
-RUN useradd -m builder && usermod -aG sudo builder
-USER builder
-WORKDIR /home/builder
+# Install neovim
+RUN echo "🧪 Installing Homebrew and Neovim..." && \
+  apt-get update && apt-get install -y build-essential curl file git && \
+  git clone https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew && \
+  mkdir -p /home/linuxbrew/.linuxbrew/bin && \
+  ln -s /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew && \
+  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /etc/profile && \
+  /home/linuxbrew/.linuxbrew/bin/brew install neovim && \
+  ln -s /home/linuxbrew/.linuxbrew/bin/nvim /usr/local/bin/nvim
 
-# Install Homebrew
-RUN git clone https://github.com/Homebrew/brew /home/builder/.linuxbrew/Homebrew && \
-  mkdir -p /home/builder/.linuxbrew/bin && \
-  ln -s /home/builder/.linuxbrew/Homebrew/bin/brew /home/builder/.linuxbrew/bin/brew
-
-ENV PATH="/home/builder/.linuxbrew/bin:/home/builder/.linuxbrew/sbin:${PATH}"
-ENV HOMEBREW_NO_ANALYTICS=1
-
-# Install Neovim and fzf via Homebrew
-RUN brew install neovim
-
-# Return to root
-USER root
-
+# Install dbmate
 RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
   -o /usr/local/bin/dbmate && \
   chmod +x /usr/local/bin/dbmate

@@ -11,6 +11,7 @@ services:
       - osrs-bingo-data:/osrs-bingo
       - ${ZSHRC_PATH:-/dev/null}:/root/.zshrc
       - ${NEOVIM_CONFIG_PATH:-/dev/null}:/root/.config/nvim
+      - ${GITCONFIG_PATH}:/root/.gitconfig
       - nvim-data:/root/.local/share/nvim # Persist plugins
       - nvim-state:/root/.local/state/nvim
       - nvim-cache:/root/.cache/nvim
@@ -38,18 +39,19 @@ services:
       - postgres:/var/lib/postgresql/data
     networks:
       - devnet
-    pgadmin:
-      image: dpage/pgadmin4:latest
-      restart: always
-      environment:
-        PGADMIN_DEFAULT_EMAIL:  admin@you.com
-        PGADMIN_DEFAULT_PASSWORD: secret
-      ports:
-        - "8080:80"      # maps http://localhost:8080 to pgAdmin UI
-      volumes:
-        - pgadmin-data:/var/lib/pgadmin
-      depends_on:
-        - db
+      
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL:  ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - "8080:80"      # maps http://localhost:8080 to pgAdmin UI
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
 
   dbmate:
     image: amacneil/dbmate
@@ -70,7 +72,7 @@ volumes:
   nvim-state:
   nvim-cache:
   osrs-bingo-data:
-
+  pgadmin-data:
 
 networks:
   devnet:
