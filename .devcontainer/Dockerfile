@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 
+FROM ubuntu:22.04
 ENV IN_DOCKER=1
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
   lsb-release \
   fontconfig \
   fzf \
-  git \
   openssh-client \
   && apt-get clean
 
@@ -39,15 +38,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
   apt-get update && \
   apt-get install -y nodejs
 
-# Install neovim
-RUN echo "🧪 Installing Homebrew and Neovim..." && \
-  apt-get update && apt-get install -y build-essential curl file git && \
-  git clone https://github.com/Homebrew/brew /home/linuxbrew/.linuxbrew/Homebrew && \
-  mkdir -p /home/linuxbrew/.linuxbrew/bin && \
-  ln -s /home/linuxbrew/.linuxbrew/Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/brew && \
-  echo 'eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"' >> /etc/profile && \
-  /home/linuxbrew/.linuxbrew/bin/brew install neovim && \
-  ln -s /home/linuxbrew/.linuxbrew/bin/nvim /usr/local/bin/nvim
+# Install Neovim (v0.11.1)
+RUN curl -fsSL https://github.com/neovim/neovim/releases/download/v0.11.1/nvim-linux-x86_64.tar.gz \
+  -o nvim-linux-x86_64.tar.gz && \
+  tar xzf nvim-linux-x86_64.tar.gz -C /usr/local --strip-components=1 && \
+  rm nvim-linux-x86_64.tar.gz
 
 # Install dbmate
 RUN curl -fsSL https://github.com/amacneil/dbmate/releases/latest/download/dbmate-linux-amd64 \
@@ -64,9 +59,11 @@ RUN curl -LO https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Fi
   fc-cache -fv && \
   rm FiraCode.zip
 
+# Copy application files and entrypoint
 COPY . /osrs-bingo-init
 COPY .devcontainer/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
+
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["zsh"]
 
